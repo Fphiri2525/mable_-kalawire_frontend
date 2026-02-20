@@ -273,7 +273,7 @@ export default function WorkPage() {
                 <div className={index % 2 === 0 ? 'md:order-2' : 'md:order-1'}>
                   <div className="relative aspect-[4/3] max-w-md mx-auto md:mx-0 overflow-hidden bg-gray-50">
                     <img 
-                      src={program.imageUrl.src || program.imageUrl}
+                      src={typeof program.imageUrl === 'string' ? program.imageUrl : program.imageUrl.src}
                       alt={program.imageAlt}
                       className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
                     />
