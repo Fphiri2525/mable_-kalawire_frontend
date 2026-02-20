@@ -169,7 +169,6 @@ export default function MessagesPage() {
   const [filteredMessages, setFilteredMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
-  const [notification, setNotification] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
   const [showViewModal, setShowViewModal] = useState(false);
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [selectedMessage, setSelectedMessage] = useState<Message | null>(null);
@@ -211,7 +210,6 @@ export default function MessagesPage() {
       setFilteredMessages(data);
     } catch (err: any) {
       setError(err.message);
-      showNotification('Failed to load messages', 'error');
     } finally {
       setIsLoading(false);
     }
@@ -219,7 +217,6 @@ export default function MessagesPage() {
 
   const deleteMessage = async (id: number) => {
     try {
-      // Note: You need to add this DELETE endpoint to your backend
       const response = await fetch(`https://mablefoundationbackend-production.up.railway.app/api/messages/${id}`, {
         method: 'DELETE'
       });
@@ -228,15 +225,10 @@ export default function MessagesPage() {
         throw new Error('Failed to delete message');
       }
 
-      showNotification('Message deleted successfully', 'success');
       fetchMessages(); // Refresh the list
     } catch (err: any) {
-      showNotification(err.message || 'Failed to delete message', 'error');
+      setError(err.message || 'Failed to delete message');
     }
-  };
-
-  const showNotification = (message: string, type: 'success' | 'error') => {
-    setNotification({ message, type });
   };
 
   const handleViewClick = (message: Message) => {
@@ -278,15 +270,6 @@ export default function MessagesPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-6 transition-colors duration-300">
-      {/* Notifications */}
-      {notification && (
-        <Toast
-          message={notification.message}
-          type={notification.type}
-          onClose={() => setNotification(null)}
-        />
-      )}
-
       {/* Confirmation Dialog */}
       <ConfirmDialog
         isOpen={showConfirmDialog}

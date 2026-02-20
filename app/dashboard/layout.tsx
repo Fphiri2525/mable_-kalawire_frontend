@@ -24,6 +24,8 @@ export default function DashboardLayout({
 
   const [userEmail, setUserEmail] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -58,16 +60,27 @@ export default function DashboardLayout({
 
   if (isAuthenticated === null) return null;
 
+  const sidebarWidth = sidebarCollapsed ? 'md:pl-20' : 'md:pl-64';
+  const topbarMargin = sidebarCollapsed ? 'md:left-20' : 'md:left-64';
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-      <Sidebar isDarkMode={isDarkMode} />
+      <Sidebar 
+        isDarkMode={isDarkMode} 
+        isCollapsed={sidebarCollapsed}
+        onCollapsedChange={setSidebarCollapsed}
+        isOpen={sidebarOpen}
+        onOpenChange={setSidebarOpen}
+      />
       <TopBar
         isDarkMode={isDarkMode}
         onToggleTheme={toggleTheme}
-        userEmail={userEmail}  // Pass the email from localStorage
+        userEmail={userEmail}
+        sidebarCollapsed={sidebarCollapsed}
+        onMobileMenuToggle={() => setSidebarOpen(!sidebarOpen)}
       />
-      <main className="pl-64 pt-16 min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-        <div className="p-8">
+      <main className={`pt-16 min-h-screen bg-gray-50 dark:bg-gray-900 transition-all duration-300 ${sidebarWidth} pl-0`}>
+        <div className="p-4 md:p-8">
           {React.Children.map(children, (child) => {
             if (React.isValidElement(child)) {
               return React.cloneElement(child, {
