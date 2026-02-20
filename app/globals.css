@@ -1,26 +1,73 @@
+/* globals.css */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap');
 @import "tailwindcss";
 
+/* Tailwind v4: class-based dark mode */
+@variant dark (&:where(.dark, .dark *));
+
+/* Custom CSS Variables */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-sans: 'Poppins', 'Inter', Arial, Helvetica, sans-serif;
+  --primary: #ee7c2b;
+  --accent-yellow: #f6c445;
+  --accent-green: #5d7c43;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.hero-bg {
+  background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 800"%3E%3Cdefs%3E%3ClinearGradient id="grad1" x1="0%25" y1="0%25" x2="100%25" y2="100%25"%3E%3Cstop offset="0%25" style="stop-color:%23e8dcc4;stop-opacity:1" /%3E%3Cstop offset="50%25" style="stop-color:%23d4c5a9;stop-opacity:1" /%3E%3Cstop offset="100%25" style="stop-color:%23c9b896;stop-opacity:1" /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width="1440" height="800" fill="url(%23grad1)"/%3E%3C/svg%3E');
+  background-size: cover;
+  background-position: center;
+}
+
+.about-image {
+  background: linear-gradient(135deg, #2c2c54 0%, #1a1a3e 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.about-image::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+}
+
+.why-us-image {
+  background: linear-gradient(135deg, #e8dcc4 0%, #c9b896 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.connect-bg {
+  background: linear-gradient(135deg, rgba(209, 204, 192, 0.5) 0%, rgba(201, 184, 150, 0.5) 100%);
+}
+
+@media (min-width: 768px) {
+  .desktop-menu {
+    display: flex !important;
+  }
+  .mobile-menu-btn {
+    display: none !important;
+  }
 }
