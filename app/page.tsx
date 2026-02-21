@@ -313,7 +313,7 @@ export default function MeboFoundation() {
         </div>
       </section>
 
-      {/* About Section */}
+      {/* About Section - UPDATED: Removed overlay to make image transparent */}
       <section id="about" style={{ padding: '5rem 0', background: 'white' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem' }}>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '3rem', alignItems: 'center' }}>
@@ -330,7 +330,7 @@ export default function MeboFoundation() {
                 overflow: 'hidden'
               }}
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-900/70 to-purple-900/50"></div>
+              {/* OVERLAY REMOVED - No more gradient overlay */}
             </div>
             
             <div>
