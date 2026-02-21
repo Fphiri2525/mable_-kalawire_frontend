@@ -17,7 +17,9 @@ import {
   AlertCircle,
   CheckCircle2,
   TrendingUp,
-  RefreshCw
+  RefreshCw,
+  Grid,
+  List
 } from 'lucide-react';
 
 // Add the props interface
@@ -43,14 +45,14 @@ const Toast = ({ message, type, onClose }: { message: string; type: 'success' | 
   }, [onClose]);
 
   return (
-    <div className={`fixed top-4 right-4 z-50 flex items-center gap-3 px-4 py-3 rounded-lg shadow-lg transition-all duration-300 ${
+    <div className={`fixed top-4 right-4 z-50 flex items-center gap-3 px-4 py-3 rounded-lg shadow-lg transition-all duration-300 max-w-[90vw] sm:max-w-md ${
       type === 'success' 
         ? 'bg-green-50 text-green-800 border border-green-200 dark:bg-green-900/30 dark:text-green-300 dark:border-green-800' 
         : 'bg-red-50 text-red-800 border border-red-200 dark:bg-red-900/30 dark:text-red-300 dark:border-red-800'
     }`}>
-      {type === 'success' ? <CheckCircle2 size={20} /> : <AlertCircle size={20} />}
-      <span className="text-sm font-medium">{message}</span>
-      <button onClick={onClose} className="ml-4 hover:opacity-70">
+      {type === 'success' ? <CheckCircle2 size={20} className="flex-shrink-0" /> : <AlertCircle size={20} className="flex-shrink-0" />}
+      <span className="text-sm font-medium break-words">{message}</span>
+      <button onClick={onClose} className="ml-auto hover:opacity-70 flex-shrink-0">
         <X size={16} />
       </button>
     </div>
@@ -70,19 +72,19 @@ const ConfirmDialog = ({ isOpen, title, message, onConfirm, onCancel }: {
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
       <div className="max-w-md w-full bg-white dark:bg-gray-800 rounded-xl shadow-xl overflow-hidden border border-gray-100 dark:border-gray-700">
-        <div className="p-6">
-          <h3 className="text-lg font-semibold mb-2 text-gray-900 dark:text-white">{title}</h3>
-          <p className="text-sm mb-6 text-gray-600 dark:text-gray-400">{message}</p>
-          <div className="flex justify-end gap-3">
+        <div className="p-4 sm:p-6">
+          <h3 className="text-base sm:text-lg font-semibold mb-2 text-gray-900 dark:text-white">{title}</h3>
+          <p className="text-xs sm:text-sm mb-6 text-gray-600 dark:text-gray-400">{message}</p>
+          <div className="flex flex-col sm:flex-row justify-end gap-2 sm:gap-3">
             <button
               onClick={onCancel}
-              className="px-4 py-2 text-sm bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+              className="w-full sm:w-auto px-4 py-2 text-xs sm:text-sm bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
             >
               Cancel
             </button>
             <button
               onClick={onConfirm}
-              className="px-4 py-2 text-sm bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+              className="w-full sm:w-auto px-4 py-2 text-xs sm:text-sm bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
             >
               Confirm
             </button>
@@ -127,34 +129,34 @@ const ViewDonationModal = ({ donation, onClose }: { donation: Donation | null; o
 
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-40 p-4">
-      <div className="max-w-lg w-full bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 overflow-hidden">
-        <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Donation Details</h2>
+      <div className="max-w-lg w-full bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 overflow-hidden">
+        <div className="px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
+          <h2 className="text-base sm:text-lg md:text-xl font-semibold text-gray-900 dark:text-white">Donation Details</h2>
           <button
             onClick={onClose}
             className="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
           >
-            <X size={20} className="text-gray-500 dark:text-gray-400" />
+            <X size={18} className="sm:w-5 sm:h-5 text-gray-500 dark:text-gray-400" />
           </button>
         </div>
 
-        <div className="p-6 space-y-4">
+        <div className="p-4 sm:p-6 space-y-4">
           <div className="bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 rounded-xl p-4 border border-indigo-100 dark:border-indigo-900/30">
             <div className="flex items-center justify-between">
-              <span className="text-sm text-indigo-600 dark:text-indigo-400 font-medium">Donation ID</span>
+              <span className="text-xs sm:text-sm text-indigo-600 dark:text-indigo-400 font-medium">Donation ID</span>
               <span className="text-xs bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 px-2 py-1 rounded-full">#{donation.id}</span>
             </div>
-            <p className="text-2xl font-bold text-indigo-900 dark:text-indigo-300 mt-2">{formatCurrency(donation.amount)}</p>
+            <p className="text-xl sm:text-2xl font-bold text-indigo-900 dark:text-indigo-300 mt-2">{formatCurrency(donation.amount)}</p>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div className="col-span-2">
               <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">Donor Name</p>
-              <p className="text-sm text-gray-900 dark:text-white font-medium">{donation.donor_name}</p>
+              <p className="text-sm text-gray-900 dark:text-white font-medium break-words">{donation.donor_name}</p>
             </div>
             <div>
               <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">Location</p>
-              <p className="text-sm text-gray-900 dark:text-white">{donation.location}</p>
+              <p className="text-sm text-gray-900 dark:text-white break-words">{donation.location}</p>
             </div>
             <div>
               <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">Date</p>
@@ -167,13 +169,116 @@ const ViewDonationModal = ({ donation, onClose }: { donation: Donation | null; o
           </div>
         </div>
 
-        <div className="px-6 py-4 border-t border-gray-200 dark:border-gray-700 flex justify-end">
+        <div className="px-4 sm:px-6 py-3 sm:py-4 border-t border-gray-200 dark:border-gray-700 flex justify-end">
           <button
             onClick={onClose}
-            className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+            className="w-full sm:w-auto px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm hover:bg-indigo-700 transition-colors"
           >
             Close
           </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Mobile Card Component for Donations
+const DonationCard = ({ 
+  donation, 
+  onView, 
+  onEdit, 
+  onDelete 
+}: { 
+  donation: Donation; 
+  onView: (donation: Donation) => void;
+  onEdit: (donation: Donation) => void;
+  onDelete: (id: number) => void;
+}) => {
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
+  };
+
+  const formatCurrency = (amount: number) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 0
+    }).format(amount);
+  };
+
+  const getPurposeBadgeColor = (purpose: string) => {
+    const colors: Record<string, string> = {
+      'general': 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300',
+      'education': 'bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300',
+      'healthcare': 'bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300',
+      'emergency': 'bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300',
+      'infrastructure': 'bg-purple-100 text-purple-800 dark:bg-purple-900/40 dark:text-purple-300',
+      'other': 'bg-orange-100 text-orange-800 dark:bg-orange-900/40 dark:text-orange-300'
+    };
+    return colors[purpose] || 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
+  };
+
+  return (
+    <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 hover:shadow-md transition-shadow">
+      <div className="flex justify-between items-start mb-3">
+        <div className="flex items-center gap-2">
+          <div className="w-8 h-8 bg-indigo-100 dark:bg-indigo-900/40 rounded-full flex items-center justify-center">
+            <User size={14} className="text-indigo-600 dark:text-indigo-400" />
+          </div>
+          <div>
+            <h3 className="font-semibold text-gray-900 dark:text-white text-base line-clamp-1">
+              {donation.donor_name}
+            </h3>
+            <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium capitalize ${getPurposeBadgeColor(donation.purpose)}`}>
+              {donation.purpose}
+            </span>
+          </div>
+        </div>
+        <div className="flex items-center gap-1 flex-shrink-0 ml-2">
+          <button
+            onClick={() => onView(donation)}
+            className="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+            title="View details"
+          >
+            <Eye size={16} />
+          </button>
+          <button
+            onClick={() => onEdit(donation)}
+            className="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+            title="Edit donation"
+          >
+            <Edit2 size={16} />
+          </button>
+          <button
+            onClick={() => onDelete(donation.id)}
+            className="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition-colors"
+            title="Delete donation"
+          >
+            <Trash2 size={16} />
+          </button>
+        </div>
+      </div>
+
+      <div className="space-y-2 text-sm mt-2">
+        <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
+          <MapPin size={14} className="flex-shrink-0" />
+          <span className="truncate">{donation.location}</span>
+        </div>
+        
+        <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
+          <Calendar size={14} className="flex-shrink-0" />
+          <span>{formatDate(donation.donation_date)}</span>
+        </div>
+        
+        <div className="flex items-center gap-2">
+          <DollarSign size={14} className="flex-shrink-0 text-green-600 dark:text-green-400" />
+          <span className="font-medium text-green-600 dark:text-green-400">
+            {formatCurrency(donation.amount)}
+          </span>
         </div>
       </div>
     </div>
@@ -193,6 +298,7 @@ export default function DonationsPage({ isDarkMode }: DonationsPageProps) {
   const [selectedDonation, setSelectedDonation] = useState<Donation | null>(null);
   const [donationToDelete, setDonationToDelete] = useState<number | null>(null);
   const [notification, setNotification] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   
   // Form state
   const [formData, setFormData] = useState({
@@ -487,7 +593,7 @@ export default function DonationsPage({ isDarkMode }: DonationsPageProps) {
   const today = new Date().toISOString().split('T')[0];
 
   return (
-    <div className="min-h-screen bg-transparent p-6">
+    <div className="min-h-screen bg-transparent p-3 sm:p-4 md:p-6">
       {/* Notifications */}
       {notification && (
         <Toast
@@ -520,27 +626,27 @@ export default function DonationsPage({ isDarkMode }: DonationsPageProps) {
 
       <div className="max-w-7xl mx-auto">
         {/* Header with Stats */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between mb-4">
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-              Donations Management
+        <div className="mb-4 sm:mb-6 md:mb-8">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+            <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
+              Donations
             </h1>
             
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2">
               <button
                 onClick={handleRefresh}
-                className="p-2.5 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
+                className="p-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
                 title="Refresh data"
               >
-                <RefreshCw size={18} className={isLoading || isLoadingTotal ? 'animate-spin' : ''} />
+                <RefreshCw size={16} className={isLoading || isLoadingTotal ? 'animate-spin' : ''} />
               </button>
               
               {!showForm && (
                 <button
                   onClick={handleAddClick}
-                  className="px-5 py-2.5 bg-indigo-600 text-white rounded-xl font-medium hover:bg-indigo-700 transition-colors flex items-center space-x-2 shadow-sm"
+                  className="flex-1 sm:flex-none px-4 sm:px-5 py-2 sm:py-2.5 bg-indigo-600 text-white rounded-xl font-medium hover:bg-indigo-700 transition-colors flex items-center justify-center space-x-2 shadow-sm text-sm sm:text-base"
                 >
-                  <Plus size={18} />
+                  <Plus size={16} className="sm:w-[18px] sm:h-[18px]" />
                   <span>Add Donation</span>
                 </button>
               )}
@@ -548,24 +654,24 @@ export default function DonationsPage({ isDarkMode }: DonationsPageProps) {
           </div>
 
           {/* Stats Card */}
-          <div className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl p-6 text-white">
+          <div className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl sm:rounded-2xl p-4 sm:p-6 text-white">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-indigo-100 text-sm font-medium mb-1">Total Donations Received</p>
+                <p className="text-indigo-100 text-xs sm:text-sm font-medium mb-1">Total Donations</p>
                 {isLoadingTotal ? (
                   <div className="flex items-center gap-2">
-                    <Loader2 size={24} className="animate-spin" />
-                    <span className="text-lg">Calculating...</span>
+                    <Loader2 size={20} className="animate-spin" />
+                    <span className="text-base sm:text-lg">Loading...</span>
                   </div>
                 ) : (
                   <>
-                    <p className="text-4xl font-bold">{formatCurrency(totalDonated)}</p>
-                    <p className="text-indigo-100 text-sm mt-2">{donations.length} donations recorded</p>
+                    <p className="text-2xl sm:text-3xl md:text-4xl font-bold">{formatCurrency(totalDonated)}</p>
+                    <p className="text-indigo-100 text-xs sm:text-sm mt-1 sm:mt-2">{donations.length} donations recorded</p>
                   </>
                 )}
               </div>
-              <div className="bg-white/20 p-4 rounded-full">
-                <TrendingUp size={32} />
+              <div className="bg-white/20 p-3 sm:p-4 rounded-full">
+                <TrendingUp size={20} className="sm:w-8 sm:h-8" />
               </div>
             </div>
           </div>
@@ -573,9 +679,9 @@ export default function DonationsPage({ isDarkMode }: DonationsPageProps) {
 
         {/* Add/Edit Form */}
         {showForm && (
-          <div className="mb-8 bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
-            <div className="px-6 py-4 border-b border-gray-100 dark:border-gray-700 flex items-center justify-between">
-              <h2 className="text-lg font-medium text-gray-900 dark:text-white">
+          <div className="mb-6 sm:mb-8 bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+            <div className="px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-100 dark:border-gray-700 flex items-center justify-between">
+              <h2 className="text-base sm:text-lg font-medium text-gray-900 dark:text-white">
                 {selectedDonation ? 'Edit Donation' : 'Add New Donation'}
               </h2>
               <button
@@ -583,14 +689,14 @@ export default function DonationsPage({ isDarkMode }: DonationsPageProps) {
                 className="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
                 disabled={isSubmitting}
               >
-                <X size={18} className="text-gray-500 dark:text-gray-400" />
+                <X size={16} className="sm:w-[18px] sm:h-[18px] text-gray-500 dark:text-gray-400" />
               </button>
             </div>
 
-            <form onSubmit={handleSubmit} className="p-6 space-y-5">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <form onSubmit={handleSubmit} className="p-4 sm:p-6 space-y-4 sm:space-y-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
                 {/* Donor Name */}
-                <div className="md:col-span-2">
+                <div className="sm:col-span-2">
                   <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1.5 uppercase tracking-wider">
                     Donor Name <span className="text-red-500">*</span>
                   </label>
@@ -632,7 +738,7 @@ export default function DonationsPage({ isDarkMode }: DonationsPageProps) {
                 {/* Date */}
                 <div>
                   <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1.5 uppercase tracking-wider">
-                    Donation Date <span className="text-red-500">*</span>
+                    Date <span className="text-red-500">*</span>
                   </label>
                   <div className="relative">
                     <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={14} />
@@ -678,7 +784,7 @@ export default function DonationsPage({ isDarkMode }: DonationsPageProps) {
                 {/* Amount */}
                 <div>
                   <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1.5 uppercase tracking-wider">
-                    Amount Donated <span className="text-red-500">*</span>
+                    Amount <span className="text-red-500">*</span>
                   </label>
                   <div className="relative">
                     <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={14} />
@@ -699,24 +805,24 @@ export default function DonationsPage({ isDarkMode }: DonationsPageProps) {
               </div>
 
               {/* Form Actions */}
-              <div className="flex justify-end space-x-2 pt-4 border-t border-gray-100 dark:border-gray-700">
+              <div className="flex flex-col-reverse sm:flex-row justify-end gap-2 sm:gap-2 pt-4 border-t border-gray-100 dark:border-gray-700">
                 <button 
                   type="button" 
                   onClick={resetForm}
-                  className="px-4 py-2 text-sm border border-gray-200 dark:border-gray-700 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors disabled:opacity-50"
+                  className="w-full sm:w-auto px-4 py-2 text-sm border border-gray-200 dark:border-gray-700 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors disabled:opacity-50"
                   disabled={isSubmitting}
                 >
                   Cancel
                 </button>
                 <button 
                   type="submit" 
-                  className="px-4 py-2 text-sm bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                  className="w-full sm:w-auto px-4 py-2 text-sm bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                   disabled={isSubmitting}
                 >
-                  {isSubmitting && <Loader2 size={16} className="animate-spin" />}
+                  {isSubmitting && <Loader2 size={14} className="animate-spin" />}
                   {isSubmitting 
                     ? (selectedDonation ? 'Updating...' : 'Adding...')
-                    : (selectedDonation ? 'Update Donation' : 'Add Donation')
+                    : (selectedDonation ? 'Update' : 'Add Donation')
                   }
                 </button>
               </div>
@@ -726,95 +832,147 @@ export default function DonationsPage({ isDarkMode }: DonationsPageProps) {
 
         {/* Donations List */}
         {!showForm && (
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+          <div className="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+            {/* Mobile View Toggle */}
+            <div className="flex items-center justify-between p-3 sm:hidden border-b border-gray-200 dark:border-gray-700">
+              <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                {donations.length} donations
+              </span>
+              <div className="flex items-center gap-1 bg-gray-100 dark:bg-gray-700 rounded-lg p-1">
+                <button
+                  onClick={() => setViewMode('grid')}
+                  className={`p-1.5 rounded ${viewMode === 'grid' ? 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400' : 'text-gray-500 dark:text-gray-400'}`}
+                >
+                  <Grid size={16} />
+                </button>
+                <button
+                  onClick={() => setViewMode('list')}
+                  className={`p-1.5 rounded ${viewMode === 'list' ? 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400' : 'text-gray-500 dark:text-gray-400'}`}
+                >
+                  <List size={16} />
+                </button>
+              </div>
+            </div>
+
             {/* Loading State */}
             {isLoading && (
-              <div className="flex justify-center items-center py-12">
-                <Loader2 className="animate-spin h-8 w-8 text-gray-500 dark:text-gray-400" />
+              <div className="flex justify-center items-center py-8 sm:py-12">
+                <Loader2 className="animate-spin h-6 w-6 sm:h-8 sm:w-8 text-gray-500 dark:text-gray-400" />
               </div>
             )}
 
             {/* Empty State */}
             {!isLoading && donations.length === 0 && (
-              <div className="text-center py-12">
-                <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center">
-                  <Heart className="text-gray-400 dark:text-gray-500" size={24} />
+              <div className="text-center py-8 sm:py-12 px-4">
+                <div className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-4 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center">
+                  <Heart className="text-gray-400 dark:text-gray-500 sm:w-6 sm:h-6" size={20} />
                 </div>
-                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">No donations yet</h3>
-                <p className="text-gray-500 dark:text-gray-400 text-sm mb-6">Start tracking your first donation</p>
+                <h3 className="text-base sm:text-lg font-medium text-gray-900 dark:text-white mb-2">No donations yet</h3>
+                <p className="text-gray-500 dark:text-gray-400 text-xs sm:text-sm mb-6">Start tracking your first donation</p>
                 <button
                   onClick={handleAddClick}
-                  className="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 transition-colors"
+                  className="inline-flex items-center px-3 sm:px-4 py-1.5 sm:py-2 bg-indigo-600 text-white rounded-lg text-xs sm:text-sm font-medium hover:bg-indigo-700 transition-colors"
                 >
-                  <Plus size={16} className="mr-2" />
+                  <Plus size={14} className="sm:w-4 sm:h-4 mr-1 sm:mr-2" />
                   Add Your First Donation
                 </button>
               </div>
             )}
 
-            {/* Table */}
+            {/* Mobile Cards View */}
             {!isLoading && donations.length > 0 && (
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead>
-                    <tr className="border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50">
-                      <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Donor</th>
-                      <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Location</th>
-                      <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Purpose</th>
-                      <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Date</th>
-                      <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Amount</th>
-                      <th className="px-6 py-4 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                    {donations.map((donation) => (
-                      <tr key={donation.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
-                        <td className="px-6 py-4">
-                          <div className="flex items-center">
-                            <div className="w-8 h-8 bg-indigo-100 dark:bg-indigo-900/40 rounded-full flex items-center justify-center mr-3">
-                              <User size={14} className="text-indigo-600 dark:text-indigo-400" />
-                            </div>
-                            <span className="text-sm font-medium text-gray-900 dark:text-white">{donation.donor_name}</span>
-                          </div>
-                        </td>
-                        <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">{donation.location}</td>
-                        <td className="px-6 py-4">
-                          <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium capitalize ${getPurposeBadgeColor(donation.purpose)}`}>
-                            {donation.purpose}
-                          </span>
-                        </td>
-                        <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">{formatDate(donation.donation_date)}</td>
-                        <td className="px-6 py-4 text-sm font-medium text-green-600 dark:text-green-400">{formatCurrency(donation.amount)}</td>
-                        <td className="px-6 py-4">
-                          <div className="flex items-center justify-end gap-2">
-                            <button
-                              onClick={() => handleViewClick(donation)}
-                              className="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400"
-                              title="View details"
-                            >
-                              <Eye size={16} />
-                            </button>
-                            <button
-                              onClick={() => handleEditClick(donation)}
-                              className="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400"
-                              title="Edit donation"
-                            >
-                              <Edit2 size={16} />
-                            </button>
-                            <button
-                              onClick={() => handleDeleteClick(donation.id)}
-                              className="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400"
-                              title="Delete donation"
-                            >
-                              <Trash2 size={16} />
-                            </button>
-                          </div>
-                        </td>
+              <>
+                <div className="block sm:hidden p-3">
+                  {viewMode === 'grid' ? (
+                    <div className="grid grid-cols-1 gap-3">
+                      {donations.map((donation) => (
+                        <DonationCard
+                          key={donation.id}
+                          donation={donation}
+                          onView={handleViewClick}
+                          onEdit={handleEditClick}
+                          onDelete={handleDeleteClick}
+                        />
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="space-y-3">
+                      {donations.map((donation) => (
+                        <DonationCard
+                          key={donation.id}
+                          donation={donation}
+                          onView={handleViewClick}
+                          onEdit={handleEditClick}
+                          onDelete={handleDeleteClick}
+                        />
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* Desktop Table */}
+                <div className="hidden sm:block overflow-x-auto">
+                  <table className="w-full">
+                    <thead>
+                      <tr className="border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50">
+                        <th className="px-4 sm:px-6 py-3 sm:py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Donor</th>
+                        <th className="px-4 sm:px-6 py-3 sm:py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Location</th>
+                        <th className="px-4 sm:px-6 py-3 sm:py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Purpose</th>
+                        <th className="px-4 sm:px-6 py-3 sm:py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Date</th>
+                        <th className="px-4 sm:px-6 py-3 sm:py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Amount</th>
+                        <th className="px-4 sm:px-6 py-3 sm:py-4 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Actions</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+                    </thead>
+                    <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+                      {donations.map((donation) => (
+                        <tr key={donation.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                          <td className="px-4 sm:px-6 py-3 sm:py-4">
+                            <div className="flex items-center">
+                              <div className="w-7 h-7 sm:w-8 sm:h-8 bg-indigo-100 dark:bg-indigo-900/40 rounded-full flex items-center justify-center mr-2 sm:mr-3">
+                                <User size={12} className="sm:w-3.5 sm:h-3.5 text-indigo-600 dark:text-indigo-400" />
+                              </div>
+                              <span className="text-xs sm:text-sm font-medium text-gray-900 dark:text-white">{donation.donor_name}</span>
+                            </div>
+                          </td>
+                          <td className="px-4 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm text-gray-600 dark:text-gray-400">{donation.location}</td>
+                          <td className="px-4 sm:px-6 py-3 sm:py-4">
+                            <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium capitalize ${getPurposeBadgeColor(donation.purpose)}`}>
+                              {donation.purpose}
+                            </span>
+                          </td>
+                          <td className="px-4 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm text-gray-600 dark:text-gray-400">{formatDate(donation.donation_date)}</td>
+                          <td className="px-4 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm font-medium text-green-600 dark:text-green-400">{formatCurrency(donation.amount)}</td>
+                          <td className="px-4 sm:px-6 py-3 sm:py-4">
+                            <div className="flex items-center justify-end gap-1 sm:gap-2">
+                              <button
+                                onClick={() => handleViewClick(donation)}
+                                className="p-1 sm:p-1.5 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400"
+                                title="View details"
+                              >
+                                <Eye size={14} className="sm:w-4 sm:h-4" />
+                              </button>
+                              <button
+                                onClick={() => handleEditClick(donation)}
+                                className="p-1 sm:p-1.5 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400"
+                                title="Edit donation"
+                              >
+                                <Edit2 size={14} className="sm:w-4 sm:h-4" />
+                              </button>
+                              <button
+                                onClick={() => handleDeleteClick(donation.id)}
+                                className="p-1 sm:p-1.5 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400"
+                                title="Delete donation"
+                              >
+                                <Trash2 size={14} className="sm:w-4 sm:h-4" />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </>
             )}
           </div>
         )}

@@ -16,7 +16,10 @@ import {
   Image as ImageIcon,
   Loader2,
   AlertCircle,
-  CheckCircle2
+  CheckCircle2,
+  Menu,
+  Grid,
+  List
 } from 'lucide-react';
 
 // Types
@@ -57,14 +60,14 @@ const Toast = ({
   }, [onClose]);
 
   return (
-    <div className={`fixed top-4 right-4 z-50 flex items-center gap-3 px-4 py-3 rounded-lg shadow-lg transition-all duration-300 ${
+    <div className={`fixed top-4 right-4 z-50 flex items-center gap-3 px-4 py-3 rounded-lg shadow-lg transition-all duration-300 max-w-[90vw] sm:max-w-md ${
       type === 'success' 
         ? 'bg-green-50 text-green-800 border border-green-200 dark:bg-green-900/30 dark:text-green-300 dark:border-green-800' 
         : 'bg-red-50 text-red-800 border border-red-200 dark:bg-red-900/30 dark:text-red-300 dark:border-red-800'
     }`}>
-      {type === 'success' ? <CheckCircle2 size={20} /> : <AlertCircle size={20} />}
-      <span className="text-sm font-medium">{message}</span>
-      <button onClick={onClose} className="ml-4 hover:opacity-70">
+      {type === 'success' ? <CheckCircle2 size={20} className="flex-shrink-0" /> : <AlertCircle size={20} className="flex-shrink-0" />}
+      <span className="text-sm font-medium break-words">{message}</span>
+      <button onClick={onClose} className="ml-auto hover:opacity-70 flex-shrink-0">
         <X size={16} />
       </button>
     </div>
@@ -90,19 +93,19 @@ const ConfirmDialog = ({
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
       <div className="max-w-md w-full bg-white dark:bg-gray-800 rounded-xl shadow-xl overflow-hidden border border-gray-100 dark:border-gray-700">
-        <div className="p-6">
-          <h3 className="text-lg font-semibold mb-2 text-gray-900 dark:text-white">{title}</h3>
-          <p className="text-sm mb-6 text-gray-600 dark:text-gray-400">{message}</p>
-          <div className="flex justify-end gap-3">
+        <div className="p-4 sm:p-6">
+          <h3 className="text-base sm:text-lg font-semibold mb-2 text-gray-900 dark:text-white">{title}</h3>
+          <p className="text-xs sm:text-sm mb-6 text-gray-600 dark:text-gray-400">{message}</p>
+          <div className="flex flex-col sm:flex-row justify-end gap-2 sm:gap-3">
             <button
               onClick={onCancel}
-              className="px-4 py-2 text-sm bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+              className="w-full sm:w-auto px-4 py-2 text-xs sm:text-sm bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
             >
               Cancel
             </button>
             <button
               onClick={onConfirm}
-              className="px-4 py-2 text-sm bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+              className="w-full sm:w-auto px-4 py-2 text-xs sm:text-sm bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
             >
               Confirm
             </button>
@@ -126,16 +129,16 @@ const MediaViewer = ({
       <div className="relative max-w-5xl w-full">
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 p-2 bg-black/50 text-white rounded-full hover:bg-black/70 transition-colors z-10"
+          className="absolute top-2 right-2 sm:top-4 sm:right-4 p-1.5 sm:p-2 bg-black/50 text-white rounded-full hover:bg-black/70 transition-colors z-10"
         >
-          <X size={24} />
+          <X size={20} className="sm:w-6 sm:h-6" />
         </button>
         
         <div className="flex flex-col items-center">
           <img
             src={media.media_url}
             alt="Activity"
-            className="max-w-full max-h-[80vh] object-contain rounded-lg"
+            className="max-w-full max-h-[60vh] sm:max-h-[80vh] object-contain rounded-lg"
             onError={(e) => {
               (e.target as HTMLImageElement).src = 'https://via.placeholder.com/800?text=Image+Not+Found';
             }}
@@ -146,12 +149,104 @@ const MediaViewer = ({
             download
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-4 flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-lg text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+            className="mt-4 flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-lg text-xs sm:text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
           >
-            <Download size={16} />
+            <Download size={14} className="sm:w-4 sm:h-4" />
             <span>Download Image</span>
           </a>
         </div>
+      </div>
+    </div>
+  );
+};
+
+// Mobile Card Component for Activities
+const ActivityCard = ({ 
+  activity, 
+  onView, 
+  onEdit, 
+  onDelete 
+}: { 
+  activity: Activity; 
+  onView: (activity: Activity) => void;
+  onEdit: (activity: Activity) => void;
+  onDelete: (id: number) => void;
+}) => {
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
+  };
+
+  const formatCurrency = (amount: number) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 0
+    }).format(amount);
+  };
+
+  return (
+    <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 hover:shadow-md transition-shadow">
+      <div className="flex justify-between items-start mb-2">
+        <h3 className="font-semibold text-gray-900 dark:text-white text-base sm:text-lg line-clamp-1">
+          {activity.title}
+        </h3>
+        <div className="flex items-center gap-1 flex-shrink-0 ml-2">
+          <button
+            onClick={() => onView(activity)}
+            className="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+            title="View details"
+          >
+            <Eye size={16} />
+          </button>
+          <button
+            onClick={() => onEdit(activity)}
+            className="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+            title="Edit activity"
+          >
+            <Edit2 size={16} />
+          </button>
+          <button
+            onClick={() => onDelete(activity.id)}
+            className="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition-colors"
+            title="Delete activity"
+          >
+            <Trash2 size={16} />
+          </button>
+        </div>
+      </div>
+
+      <div className="space-y-2 text-sm">
+        <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
+          <Calendar size={14} className="flex-shrink-0" />
+          <span className="truncate">{formatDate(activity.activity_date)}</span>
+        </div>
+        
+        <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
+          <MapPin size={14} className="flex-shrink-0" />
+          <span className="truncate">{activity.location}</span>
+        </div>
+        
+        <div className="flex items-center gap-2">
+          <DollarSign size={14} className="flex-shrink-0 text-green-600 dark:text-green-400" />
+          <span className="font-medium text-green-600 dark:text-green-400">
+            {formatCurrency(activity.amount_used)}
+          </span>
+        </div>
+
+        <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
+          <ImageIcon size={14} className="flex-shrink-0" />
+          <span>{activity.media?.length || 0} photos</span>
+        </div>
+
+        {activity.description && (
+          <p className="text-gray-500 dark:text-gray-500 text-xs line-clamp-2 mt-1">
+            {activity.description}
+          </p>
+        )}
       </div>
     </div>
   );
@@ -164,6 +259,9 @@ export default function AddActivityPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [notification, setNotification] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+  
+  // View Mode State (grid/list for mobile)
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   
   // Modal States
   const [showForm, setShowForm] = useState(false);
@@ -540,7 +638,7 @@ export default function AddActivityPage() {
   const today = new Date().toISOString().split('T')[0];
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-6 transition-colors duration-300">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-3 sm:p-4 md:p-6 transition-colors duration-300">
       {/* Notifications */}
       {notification && (
         <Toast
@@ -574,33 +672,48 @@ export default function AddActivityPage() {
       )}
 
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="mb-8 flex items-center justify-between">
+        {/* Header - Simplified */}
+        <div className="mb-4 sm:mb-6 md:mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white transition-colors duration-300">
-              Activities Management
+            <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 dark:text-white transition-colors duration-300">
+              Activities
             </h1>
-            <p className="mt-1 text-sm text-gray-500 dark:text-gray-400 transition-colors duration-300">
-              Track and manage all your activities in one place
-            </p>
           </div>
           
           {!showForm && !showViewModal && (
-            <button
-              onClick={handleCreateClick}
-              className="px-5 py-2.5 bg-indigo-600 text-white rounded-xl font-medium hover:bg-indigo-700 transition-colors flex items-center space-x-2 shadow-sm"
-            >
-              <Plus size={18} />
-              <span>Add New Activity</span>
-            </button>
+            <div className="flex items-center gap-2">
+              {/* View Toggle for Mobile */}
+              <div className="flex items-center gap-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-1 sm:hidden">
+                <button
+                  onClick={() => setViewMode('grid')}
+                  className={`p-1.5 rounded ${viewMode === 'grid' ? 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400' : 'text-gray-500 dark:text-gray-400'}`}
+                >
+                  <Grid size={16} />
+                </button>
+                <button
+                  onClick={() => setViewMode('list')}
+                  className={`p-1.5 rounded ${viewMode === 'list' ? 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400' : 'text-gray-500 dark:text-gray-400'}`}
+                >
+                  <List size={16} />
+                </button>
+              </div>
+              
+              <button
+                onClick={handleCreateClick}
+                className="flex-1 sm:flex-none px-4 sm:px-5 py-2 sm:py-2.5 bg-indigo-600 text-white rounded-xl font-medium hover:bg-indigo-700 transition-colors flex items-center justify-center space-x-2 shadow-sm text-sm sm:text-base"
+              >
+                <Plus size={16} className="sm:w-[18px] sm:h-[18px]" />
+                <span>Add Activity</span>
+              </button>
+            </div>
           )}
         </div>
 
-        {/* Create/Edit Form */}
+        {/* Create/Edit Form - Responsive */}
         {showForm && (
-          <div className="mb-8 bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden transition-colors duration-300">
-            <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
-              <h2 className="text-lg font-medium text-gray-900 dark:text-white">
+          <div className="mb-6 sm:mb-8 bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden transition-colors duration-300">
+            <div className="px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
+              <h2 className="text-base sm:text-lg font-medium text-gray-900 dark:text-white">
                 {selectedActivity ? 'Edit Activity' : 'Add New Activity'}
               </h2>
               <button
@@ -612,16 +725,16 @@ export default function AddActivityPage() {
                 disabled={isSubmitting || isUploading}
                 className="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-white transition-colors"
               >
-                <X size={18} />
+                <X size={16} className="sm:w-[18px] sm:h-[18px]" />
               </button>
             </div>
 
-            <form onSubmit={handleSubmit} className="p-6 space-y-5">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <form onSubmit={handleSubmit} className="p-4 sm:p-6 space-y-4 sm:space-y-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
                 {/* Title */}
-                <div className="md:col-span-2">
+                <div className="sm:col-span-2">
                   <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1.5 uppercase tracking-wider">
-                    Activity Title <span className="text-red-500">*</span>
+                    Title <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="text"
@@ -629,7 +742,7 @@ export default function AddActivityPage() {
                     value={formData.title}
                     onChange={handleInputChange}
                     className="w-full px-3 py-2 text-sm border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
-                    placeholder="e.g., Beach Cleanup Drive"
+                    placeholder="e.g., Beach Cleanup"
                     required
                     disabled={isSubmitting || isUploading}
                   />
@@ -678,7 +791,7 @@ export default function AddActivityPage() {
                 {/* Amount */}
                 <div>
                   <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1.5 uppercase tracking-wider">
-                    Amount Used <span className="text-red-500">*</span>
+                    Amount <span className="text-red-500">*</span>
                   </label>
                   <div className="relative">
                     <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500" size={14} />
@@ -698,7 +811,7 @@ export default function AddActivityPage() {
                 </div>
 
                 {/* Description */}
-                <div className="md:col-span-2">
+                <div className="sm:col-span-2">
                   <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1.5 uppercase tracking-wider">
                     Description <span className="text-red-500">*</span>
                   </label>
@@ -715,9 +828,9 @@ export default function AddActivityPage() {
                 </div>
 
                 {/* Photo Upload */}
-                <div className="md:col-span-2">
+                <div className="sm:col-span-2">
                   <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1.5 uppercase tracking-wider">
-                    {selectedActivity ? 'Add More Photos (Optional)' : 'Photos (Optional - Max 10)'}
+                    {selectedActivity ? 'Add More Photos' : 'Photos'} <span className="text-gray-400 font-normal">(Max 10)</span>
                   </label>
                   
                   <div className="space-y-3">
@@ -729,7 +842,7 @@ export default function AddActivityPage() {
                             <img
                               src={preview}
                               alt={`Preview ${index + 1}`}
-                              className="w-16 h-16 object-cover rounded-lg border border-gray-200 dark:border-gray-700"
+                              className="w-14 h-14 sm:w-16 sm:h-16 object-cover rounded-lg border border-gray-200 dark:border-gray-700"
                             />
                             <button
                               type="button"
@@ -745,7 +858,7 @@ export default function AddActivityPage() {
                     )}
 
                     {/* Upload Button */}
-                    <label className={`flex items-center justify-center w-full px-3 py-3 border border-dashed rounded-lg cursor-pointer hover:border-indigo-500 transition-colors border-gray-300 dark:border-gray-600 ${
+                    <label className={`flex items-center justify-center w-full px-3 py-2.5 sm:py-3 border border-dashed rounded-lg cursor-pointer hover:border-indigo-500 transition-colors border-gray-300 dark:border-gray-600 ${
                       (isSubmitting || isUploading || photos.length >= 10) ? 'opacity-50 cursor-not-allowed' : ''
                     }`}>
                       <input
@@ -757,7 +870,7 @@ export default function AddActivityPage() {
                         disabled={isSubmitting || isUploading || photos.length >= 10}
                       />
                       <div className="flex items-center space-x-2">
-                        <Upload size={16} className="text-gray-400 dark:text-gray-500" />
+                        <Upload size={14} className="sm:w-4 sm:h-4 text-gray-400 dark:text-gray-500" />
                         <span className="text-xs text-gray-500 dark:text-gray-400">
                           {photos.length >= 10 
                             ? 'Maximum 10 photos reached' 
@@ -770,7 +883,7 @@ export default function AddActivityPage() {
               </div>
 
               {/* Form Actions */}
-              <div className="flex justify-end space-x-2 pt-4 border-t border-gray-200 dark:border-gray-700">
+              <div className="flex flex-col-reverse sm:flex-row justify-end gap-2 sm:gap-2 pt-4 border-t border-gray-200 dark:border-gray-700">
                 <button
                   type="button"
                   onClick={() => {
@@ -778,20 +891,20 @@ export default function AddActivityPage() {
                     setSelectedActivity(null);
                     setPhotos([]);
                   }}
-                  className="px-4 py-2 text-sm border border-gray-200 dark:border-gray-700 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                  className="w-full sm:w-auto px-4 py-2 text-sm border border-gray-200 dark:border-gray-700 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
                   disabled={isSubmitting || isUploading}
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 text-sm bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                  className="w-full sm:w-auto px-4 py-2 text-sm bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                   disabled={isSubmitting || isUploading}
                 >
-                  {(isSubmitting || isUploading) && <Loader2 size={16} className="animate-spin" />}
+                  {(isSubmitting || isUploading) && <Loader2 size={14} className="sm:w-4 sm:h-4 animate-spin" />}
                   {isSubmitting || isUploading 
                     ? (selectedActivity ? 'Updating...' : 'Creating...')
-                    : (selectedActivity ? 'Update Activity' : 'Create Activity')
+                    : (selectedActivity ? 'Update' : 'Create')
                   }
                 </button>
               </div>
@@ -799,39 +912,35 @@ export default function AddActivityPage() {
           </div>
         )}
 
-        {/* View Modal */}
+        {/* View Modal - Responsive */}
         {showViewModal && selectedActivity && (
-          <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-40 p-4">
-            <div className="max-w-4xl w-full max-h-[90vh] overflow-y-auto bg-white dark:bg-gray-800 rounded-2xl shadow-xl">
+          <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-40 p-2 sm:p-4">
+            <div className="max-w-4xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-y-auto bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-xl">
               {/* Modal Header */}
-              <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700 sticky top-0 bg-white dark:bg-gray-800 flex items-center justify-between">
-                <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
-                  Activity Details
+              <div className="px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200 dark:border-gray-700 sticky top-0 bg-white dark:bg-gray-800 flex items-center justify-between">
+                <h2 className="text-base sm:text-lg md:text-xl font-semibold text-gray-900 dark:text-white truncate pr-4">
+                  {selectedActivity.title}
                 </h2>
                 <button
                   onClick={handleCloseViewModal}
-                  className="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-white transition-colors"
+                  className="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-white transition-colors flex-shrink-0"
                 >
-                  <X size={20} />
+                  <X size={18} className="sm:w-5 sm:h-5" />
                 </button>
               </div>
 
               {/* Modal Content */}
-              <div className="p-6 space-y-6">
+              <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
                 {/* Activity Info */}
-                <div className="rounded-xl border border-gray-200 dark:border-gray-700 p-6 bg-gray-50 dark:bg-gray-700/50">
-                  <h3 className="text-lg font-medium mb-4 text-gray-900 dark:text-white">
-                    {selectedActivity.title}
-                  </h3>
-                  
-                  <div className="grid grid-cols-2 gap-4">
+                <div className="rounded-lg sm:rounded-xl border border-gray-200 dark:border-gray-700 p-4 sm:p-6 bg-gray-50 dark:bg-gray-700/50">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                     <div>
                       <p className="text-xs font-medium uppercase tracking-wider mb-1 text-gray-500 dark:text-gray-400">Date</p>
                       <p className="text-sm text-gray-900 dark:text-white">{formatDate(selectedActivity.activity_date)}</p>
                     </div>
                     <div>
                       <p className="text-xs font-medium uppercase tracking-wider mb-1 text-gray-500 dark:text-gray-400">Location</p>
-                      <p className="text-sm text-gray-900 dark:text-white">{selectedActivity.location}</p>
+                      <p className="text-sm text-gray-900 dark:text-white break-words">{selectedActivity.location}</p>
                     </div>
                     <div>
                       <p className="text-xs font-medium uppercase tracking-wider mb-1 text-gray-500 dark:text-gray-400">Amount Used</p>
@@ -839,14 +948,16 @@ export default function AddActivityPage() {
                     </div>
                   </div>
 
-                  <div className="mt-4">
+                  <div className="mt-3 sm:mt-4">
                     <p className="text-xs font-medium uppercase tracking-wider mb-1 text-gray-500 dark:text-gray-400">Description</p>
-                    <p className="text-sm text-gray-700 dark:text-gray-300">{selectedActivity.description}</p>
+                    <p className="text-xs sm:text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap break-words">
+                      {selectedActivity.description}
+                    </p>
                   </div>
                 </div>
 
                 {/* Add More Photos Section */}
-                <div className="rounded-xl border border-gray-200 dark:border-gray-700 p-4">
+                <div className="rounded-lg sm:rounded-xl border border-gray-200 dark:border-gray-700 p-3 sm:p-4">
                   <h4 className="text-sm font-medium mb-3 text-gray-900 dark:text-white">
                     Add More Photos
                   </h4>
@@ -859,7 +970,7 @@ export default function AddActivityPage() {
                             <img
                               src={preview}
                               alt={`Preview ${index + 1}`}
-                              className="w-16 h-16 object-cover rounded-lg border border-gray-200 dark:border-gray-700"
+                              className="w-14 h-14 sm:w-16 sm:h-16 object-cover rounded-lg border border-gray-200 dark:border-gray-700"
                             />
                             <button
                               type="button"
@@ -874,7 +985,7 @@ export default function AddActivityPage() {
                       </div>
                     )}
                     
-                    <div className="flex items-center gap-2">
+                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
                       <label className={`flex-1 flex items-center justify-center px-3 py-2 border border-dashed rounded-lg cursor-pointer hover:border-indigo-500 transition-colors border-gray-300 dark:border-gray-600 ${
                         (isUploading || photos.length >= 10) ? 'opacity-50 cursor-not-allowed' : ''
                       }`}>
@@ -898,7 +1009,7 @@ export default function AddActivityPage() {
                         <button
                           onClick={handleAddMorePhotos}
                           disabled={isUploading}
-                          className="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm hover:bg-indigo-700 transition-colors disabled:opacity-50 flex items-center gap-2"
+                          className="w-full sm:w-auto px-4 py-2 bg-indigo-600 text-white rounded-lg text-xs sm:text-sm hover:bg-indigo-700 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
                         >
                           {isUploading && <Loader2 size={14} className="animate-spin" />}
                           {isUploading ? 'Uploading...' : 'Upload'}
@@ -911,15 +1022,15 @@ export default function AddActivityPage() {
                 {/* Photo Gallery */}
                 {selectedActivity.media && selectedActivity.media.length > 0 ? (
                   <div>
-                    <h3 className="text-lg font-medium mb-4 text-gray-900 dark:text-white">
+                    <h3 className="text-base sm:text-lg font-medium mb-3 sm:mb-4 text-gray-900 dark:text-white">
                       Photos ({selectedActivity.media.length})
                     </h3>
                     
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3">
                       {selectedActivity.media.map((media) => (
-                        <div key={media.media_id} className="relative group">
+                        <div key={media.media_id} className="relative group aspect-square">
                           <div
-                            className="relative aspect-square cursor-pointer overflow-hidden rounded-lg"
+                            className="relative w-full h-full cursor-pointer overflow-hidden rounded-lg"
                             onClick={() => handleMediaClick(media)}
                           >
                             <img
@@ -932,7 +1043,7 @@ export default function AddActivityPage() {
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                             <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                              <Eye className="text-white drop-shadow-lg" size={24} />
+                              <Eye className="text-white drop-shadow-lg" size={20} />
                             </div>
                           </div>
                           
@@ -941,29 +1052,29 @@ export default function AddActivityPage() {
                               e.stopPropagation();
                               deleteMedia(media.media_id);
                             }}
-                            className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600 z-10"
+                            className="absolute top-1 right-1 sm:top-2 sm:right-2 bg-red-500 text-white rounded-full p-0.5 sm:p-1 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600 z-10"
                           >
-                            <X size={12} />
+                            <X size={10} className="sm:w-3 sm:h-3" />
                           </button>
                         </div>
                       ))}
                     </div>
                   </div>
                 ) : (
-                  <div className="text-center py-8 rounded-lg border border-gray-200 dark:border-gray-700">
-                    <Camera className="mx-auto mb-2 text-gray-400 dark:text-gray-600" size={32} />
-                    <p className="text-sm text-gray-500 dark:text-gray-400">
-                      No photos available for this activity
+                  <div className="text-center py-6 sm:py-8 rounded-lg border border-gray-200 dark:border-gray-700">
+                    <Camera className="mx-auto mb-2 text-gray-400 dark:text-gray-600" size={24} />
+                    <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
+                      No photos available
                     </p>
                   </div>
                 )}
               </div>
 
               {/* Modal Footer */}
-              <div className="px-6 py-4 border-t border-gray-200 dark:border-gray-700 sticky bottom-0 bg-white dark:bg-gray-800 flex justify-end">
+              <div className="px-4 sm:px-6 py-3 sm:py-4 border-t border-gray-200 dark:border-gray-700 sticky bottom-0 bg-white dark:bg-gray-800 flex justify-end">
                 <button
                   onClick={handleCloseViewModal}
-                  className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+                  className="w-full sm:w-auto px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm hover:bg-indigo-700 transition-colors"
                 >
                   Close
                 </button>
@@ -972,120 +1083,127 @@ export default function AddActivityPage() {
           </div>
         )}
 
-        {/* Activities Table */}
+        {/* Activities Display */}
         {!showForm && !showViewModal && (
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden transition-colors duration-300">
+          <div className="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden transition-colors duration-300">
             {/* Loading State */}
             {isLoading && (
-              <div className="flex justify-center items-center py-12">
-                <Loader2 className="animate-spin h-8 w-8 text-gray-500 dark:text-gray-400" />
+              <div className="flex justify-center items-center py-8 sm:py-12">
+                <Loader2 className="animate-spin h-6 w-6 sm:h-8 sm:w-8 text-gray-500 dark:text-gray-400" />
               </div>
             )}
 
             {/* Empty State */}
             {!isLoading && activities.length === 0 && (
-              <div className="text-center py-12">
-                <Camera className="mx-auto mb-3 text-gray-400 dark:text-gray-600" size={48} />
-                <h3 className="text-lg font-medium mb-1 text-gray-900 dark:text-white">
+              <div className="text-center py-8 sm:py-12 px-4">
+                <Camera className="mx-auto mb-3 text-gray-400 dark:text-gray-600" size={32} />
+                <h3 className="text-base sm:text-lg font-medium mb-1 text-gray-900 dark:text-white">
                   No activities yet
                 </h3>
-                <p className="text-sm mb-4 text-gray-500 dark:text-gray-400">
+                <p className="text-xs sm:text-sm mb-4 text-gray-500 dark:text-gray-400">
                   Get started by creating your first activity
                 </p>
                 <button
                   onClick={handleCreateClick}
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 transition-colors"
+                  className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-indigo-600 text-white rounded-lg text-xs sm:text-sm font-medium hover:bg-indigo-700 transition-colors"
                 >
-                  <Plus size={16} />
+                  <Plus size={14} className="sm:w-4 sm:h-4" />
                   <span>Add Your First Activity</span>
                 </button>
               </div>
             )}
 
-            {/* Table */}
+            {/* Mobile View - Cards */}
             {!isLoading && activities.length > 0 && (
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead>
-                    <tr className="border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50">
-                      <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Title</th>
-                      <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Date</th>
-                      <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Location</th>
-                      <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Amount</th>
-                      <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Photos</th>
-                      <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Description</th>
-                      <th className="px-6 py-4 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+              <>
+                {/* Mobile Cards (visible on small screens) */}
+                <div className="block sm:hidden p-3">
+                  <div className={viewMode === 'grid' 
+                    ? 'grid grid-cols-1 gap-3' 
+                    : 'space-y-3'
+                  }>
                     {activities.map((activity) => (
-                      <tr
+                      <ActivityCard
                         key={activity.id}
-                        className="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
-                      >
-                        <td className="px-6 py-4 text-sm font-medium text-gray-900 dark:text-white">
-                          {activity.title}
-                        </td>
-                        <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">
-                          {formatDate(activity.activity_date)}
-                        </td>
-                        <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">
-                          {activity.location}
-                        </td>
-                        <td className="px-6 py-4 text-sm font-medium text-green-600 dark:text-green-400">
-                          {formatCurrency(activity.amount_used)}
-                        </td>
-                        <td className="px-6 py-4">
-                          <div className="flex items-center gap-2">
-                            {activity.media && activity.media.length > 0 ? (
-                              <div className="flex items-center gap-1">
-                                <ImageIcon size={14} className="text-indigo-600 dark:text-indigo-400" />
-                                <span className="text-xs text-gray-500 dark:text-gray-400">
-                                  {activity.media.length}
-                                </span>
-                              </div>
-                            ) : (
-                              <span className="text-xs text-gray-400 dark:text-gray-500">
-                                No photos
-                              </span>
-                            )}
-                          </div>
-                        </td>
-                        <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">
-                          <p className="line-clamp-2 max-w-xs">
-                            {activity.description}
-                          </p>
-                        </td>
-                        <td className="px-6 py-4">
-                          <div className="flex items-center justify-end gap-2">
-                            <button
-                              onClick={() => handleViewClick(activity)}
-                              className="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-                              title="View details"
-                            >
-                              <Eye size={16} />
-                            </button>
-                            <button
-                              onClick={() => handleEditClick(activity)}
-                              className="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
-                              title="Edit activity"
-                            >
-                              <Edit2 size={16} />
-                            </button>
-                            <button
-                              onClick={() => handleDeleteClick(activity.id)}
-                              className="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition-colors"
-                              title="Delete activity"
-                            >
-                              <Trash2 size={16} />
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
+                        activity={activity}
+                        onView={handleViewClick}
+                        onEdit={handleEditClick}
+                        onDelete={handleDeleteClick}
+                      />
                     ))}
-                  </tbody>
-                </table>
-              </div>
+                  </div>
+                </div>
+
+                {/* Desktop Table (hidden on mobile) */}
+                <div className="hidden sm:block overflow-x-auto">
+                  <table className="w-full">
+                    <thead>
+                      <tr className="border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50">
+                        <th className="px-4 sm:px-6 py-3 sm:py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Title</th>
+                        <th className="px-4 sm:px-6 py-3 sm:py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Date</th>
+                        <th className="px-4 sm:px-6 py-3 sm:py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Location</th>
+                        <th className="px-4 sm:px-6 py-3 sm:py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Amount</th>
+                        <th className="px-4 sm:px-6 py-3 sm:py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Photos</th>
+                        <th className="px-4 sm:px-6 py-3 sm:py-4 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+                      {activities.map((activity) => (
+                        <tr
+                          key={activity.id}
+                          className="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
+                        >
+                          <td className="px-4 sm:px-6 py-3 sm:py-4 text-sm font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                            {activity.title}
+                          </td>
+                          <td className="px-4 sm:px-6 py-3 sm:py-4 text-sm text-gray-600 dark:text-gray-300 whitespace-nowrap">
+                            {new Date(activity.activity_date).toLocaleDateString()}
+                          </td>
+                          <td className="px-4 sm:px-6 py-3 sm:py-4 text-sm text-gray-600 dark:text-gray-300 whitespace-nowrap">
+                            {activity.location}
+                          </td>
+                          <td className="px-4 sm:px-6 py-3 sm:py-4 text-sm font-medium text-green-600 dark:text-green-400 whitespace-nowrap">
+                            {formatCurrency(activity.amount_used)}
+                          </td>
+                          <td className="px-4 sm:px-6 py-3 sm:py-4">
+                            <div className="flex items-center gap-2">
+                              <ImageIcon size={14} className="text-indigo-600 dark:text-indigo-400" />
+                              <span className="text-xs text-gray-500 dark:text-gray-400">
+                                {activity.media?.length || 0}
+                              </span>
+                            </div>
+                          </td>
+                          <td className="px-4 sm:px-6 py-3 sm:py-4">
+                            <div className="flex items-center justify-end gap-1 sm:gap-2">
+                              <button
+                                onClick={() => handleViewClick(activity)}
+                                className="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                                title="View details"
+                              >
+                                <Eye size={14} className="sm:w-4 sm:h-4" />
+                              </button>
+                              <button
+                                onClick={() => handleEditClick(activity)}
+                                className="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+                                title="Edit activity"
+                              >
+                                <Edit2 size={14} className="sm:w-4 sm:h-4" />
+                              </button>
+                              <button
+                                onClick={() => handleDeleteClick(activity.id)}
+                                className="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition-colors"
+                                title="Delete activity"
+                              >
+                                <Trash2 size={14} className="sm:w-4 sm:h-4" />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </>
             )}
           </div>
         )}
