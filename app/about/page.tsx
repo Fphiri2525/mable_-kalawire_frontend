@@ -95,7 +95,7 @@ export default function AboutPage() {
             <div className="inline-flex items-center justify-center gap-3 mb-4">
               <div className="w-10 h-px bg-yellow-400/80"></div>
               <span className="text-yellow-400 font-medium uppercase tracking-[0.2em] text-xs drop-shadow-md">
-                Mebo Kalawire Organization
+                Mable Kalawire Organization
               </span>
               <div className="w-10 h-px bg-yellow-400/80"></div>
             </div>
@@ -173,7 +173,7 @@ export default function AboutPage() {
             </h2>
             <div className="w-12 h-px bg-gray-300 mx-auto"></div>
             <p className="text-gray-400 text-sm max-w-2xl mx-auto mt-4 font-light">
-              From personal experience to nationwide impact - the journey of Mebo Kalawire Organization
+              From personal experience to nationwide impact - the journey of Mable Kalawire Organization
             </p>
           </div>
 
@@ -184,10 +184,10 @@ export default function AboutPage() {
               <div className="order-2 md:order-1">
                 <div className="max-w-md mx-auto md:mx-0">
                   <p className="text-gray-500 text-sm leading-relaxed font-light mb-4">
-                    Mebo Kalawire Organization was officially founded in 2023, but its roots run much deeper. What began as a personal mission—helping individuals she encountered who were struggling with financial hardships and educational barriers—slowly evolved into a calling that could no longer be contained.
+                    Mable Kalawire Organization was officially founded in 2023, but its roots run much deeper. What began as a personal mission—helping individuals she encountered who were struggling with financial hardships and educational barriers—slowly evolved into a calling that could no longer be contained.
                   </p>
                   <p className="text-gray-500 text-sm leading-relaxed font-light">
-                    As Mebo continued her compassionate work, she witnessed firsthand the widespread challenges faced by countless Malawians. The realization that so many shared similar struggles inspired her to create something more sustainable, more organized, and far-reaching.
+                    As Mable continued her compassionate work, she witnessed firsthand the widespread challenges faced by countless Malawians. The realization that so many shared similar struggles inspired her to create something more sustainable, more organized, and far-reaching.
                   </p>
                 </div>
               </div>
@@ -195,7 +195,7 @@ export default function AboutPage() {
                 <div className="relative aspect-[4/3] max-w-md mx-auto md:mx-0 overflow-hidden bg-gray-50">
                   <img 
                     src={foundationImage.src} 
-                    alt="Mebo Kalawire Foundation in Action" 
+                    alt="Mable Kalawire Foundation in Action" 
                     className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/5 to-transparent"></div>
@@ -228,7 +228,7 @@ export default function AboutPage() {
                     The foundation represents more than just charity; it embodies hope, resilience, and the belief that no one should navigate hardship alone. Built on the principles of transparency, compassion, and community empowerment, we've created a platform where every contribution makes a tangible difference.
                   </p>
                   <p className="text-gray-500 text-sm leading-relaxed font-light">
-                    Today, Mebo Kalawire Organization stands as a testament to what one person's vision can achieve when fueled by empathy and determination. We're not just providing aid—we're building futures, restoring dignity, and creating sustainable change across Malawi.
+                    Today, Mable Kalawire Organization stands as a testament to what one person's vision can achieve when fueled by empathy and determination. We're not just providing aid—we're building futures, restoring dignity, and creating sustainable change across Malawi.
                   </p>
                 </div>
               </div>
@@ -247,7 +247,7 @@ export default function AboutPage() {
           <div className="text-center mb-12">
             <span className="text-yellow-500 font-medium text-xs uppercase tracking-[0.3em]">The Heart Behind It All</span>
             <h2 className="text-2xl md:text-3xl font-light text-gray-900 mt-3 mb-3">
-              About the Founder: <span className="font-semibold">Mebo Kalawire</span>
+              About the Founder: <span className="font-semibold">Mable Kalawire</span>
             </h2>
             <div className="w-12 h-px bg-gray-300 mx-auto"></div>
             <p className="text-gray-400 text-sm max-w-2xl mx-auto mt-4 font-light">
@@ -262,14 +262,14 @@ export default function AboutPage() {
                 <div className="relative aspect-square overflow-hidden bg-gray-100">
                   <img
                     src={meboImage.src}
-                    alt="Mebo Kalawire"
+                    alt="Mablebo Kalawire"
                     className="w-full h-full object-cover"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent"></div>
                 </div>
                 <div className="absolute -bottom-4 -right-4 bg-yellow-400 text-[#1a1a5e] px-4 py-2 shadow-lg">
                   <div className="text-center">
-                    <div className="text-sm font-medium">Mebo Kalawire</div>
+                    <div className="text-sm font-medium">Mable Kalawire</div>
                     <div className="text-xs">Founder & Visionary</div>
                   </div>
                 </div>
@@ -284,7 +284,7 @@ export default function AboutPage() {
                     <Users className="w-4 h-4 text-yellow-600" />
                   </div>
                   <div>
-                    <h3 className="text-base font-medium text-gray-900 mb-1">Mebo Kalawire</h3>
+                    <h3 className="text-base font-medium text-gray-900 mb-1">Mable Kalawire</h3>
                     <p className="text-gray-500 text-xs">Young and passionate Malawian woman, born in 1995</p>
                   </div>
                 </div>

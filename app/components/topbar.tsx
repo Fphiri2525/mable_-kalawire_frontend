@@ -43,7 +43,7 @@ export default function TopBar() {
             >
               <div className="flex flex-col items-start">
                 <span className="text-2xl md:text-3xl font-bold text-yellow-400 tracking-tight">
-                  Mebo Orphan Foundation
+                  Mable Orphan Foundation
                 </span>
                 <span className="text-sm font-medium text-yellow-300 uppercase tracking-wider mt-1">
                   

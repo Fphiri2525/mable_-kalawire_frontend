@@ -155,7 +155,7 @@ export default function MeboFoundation() {
           >
             {/* Header */}
             <div className="bg-[#1a1a5e] text-white px-4 py-3 rounded-t-lg flex justify-between items-center">
-              <h3 className="font-semibold text-sm">Donate to Mebo Foundation</h3>
+              <h3 className="font-semibold text-sm">Donate to Mable Foundation</h3>
               <button
                 onClick={closeDonationCard}
                 className="text-white/80 hover:text-white"
